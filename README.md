@@ -1,8 +1,8 @@
-# PDF Master: A Flask-Based PDF Management Web Application
+# PDFILEdit: A Flask-Based PDF Management Web Application
 
 ## Overview
 
-**PDF Master** is a feature-rich web application that addresses a common, frustrating problem that students, working professionals, and educators face every day—**editing and managing PDF files with ease and flexibility**.
+**PDFILEdit** is a feature-rich web application that addresses a common, frustrating problem that students, working professionals, and educators face every day—**editing and managing PDF files with ease and flexibility**.
 
 Most online tools for PDF editing are either limited, filled with intrusive ads, expensive, or require clunky installations. PDF Master offers a **clean, efficient, and intuitive web-based solution**, empowering users to handle a variety of PDF tasks with just a few clicks—all directly in their browser.
 
@@ -12,7 +12,7 @@ Created as my final project for Harvard's CS50x course, this application reflect
 
 ## What It Does
 
-PDF Master allows users to upload one or more PDF files via a file input. These files are stored on the server in a **unique session-specific directory**, ensuring **user isolation and scalability** for concurrent users. 
+PDFILEdit allows users to upload one or more PDF files via a file input. These files are stored on the server in a **unique session-specific directory**, ensuring **user isolation and scalability** for concurrent users. 
 
 Before accepting any uploads, the server performs strict validation to ensure only `.pdf` files are accepted using a combination of extension checks and `secure_filename` sanitization to prevent malicious file uploads.
 
@@ -82,11 +82,11 @@ Researching the correct libraries and methods to layer these components was a si
 
 ## Installation Instructions
 
-To run PDF Master locally:
+To run PDFILEdit locally:
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/pdf-master.git
+git clone https://github.com/yourusername/pdfiledit.git
 cd pdf-master
 
 # Set up a virtual environment
