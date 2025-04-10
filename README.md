@@ -1,4 +1,4 @@
-# PDFILEdit: A Flask-Based PDF Management Web Application
+# PDFILEdit: A Flask-Based PDF Editor Web Application
 
 ## Overview
 
