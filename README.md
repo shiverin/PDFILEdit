@@ -48,7 +48,11 @@ This dynamic behavior is powered by the way session tracking and file management
 
 The design philosophy behind PDF Master is rooted in **enhancing workflow and productivity**. Whether you're a student preparing assignments or a professional handling contracts, PDF Master simplifies your interaction with PDFs without needing to jump between multiple platforms.
 
-Moreover, every technical decision was made with **scalability**, **usability**, and **user control** in mind—from secure file uploads to personalized file views and advanced PDF interaction tools.
+Moreover, every technical decision was made with **scalability**, **usability**, and **user control** in mind—from secure file uploads to advanced PDF interaction tools seamlessly integrated together.
+
+What sets this application apart is not just its powerful set of features, but also the thoughtful user experience it delivers. With clean session-based file handling and an intuitive interface, users are able to **toggle seamlessly between different functions**—such as signing, merging, extracting, and converting—without needing to re-upload or reset their workflow. This makes the application feel truly integrated, enabling users to complete complex PDF tasks quickly and efficiently, all in one place.
+
+Ultimately, this project empowers users with a free, reliable, and efficient tool that improves their productivity and streamlines a task that has long been a hassle.
 
 ---
 
@@ -73,19 +77,6 @@ The **PDF signature feature** was particularly challenging. I had to:
 - Finally, **merge the signature onto the selected page** and provide a downloadable signed PDF.
 
 Researching the correct libraries and methods to layer these components was a significant learning process, but the resulting functionality offers users a seamless and intuitive signature experience.
-
----
-
-## Features at a Glance
-
-- **Upload PDFs** securely with session isolation
-- **Delete individual or all files**
-- **Merge multiple PDFs**
-- **Sign a PDF** using a signature you draw or upload
-- **Extract pages** from a PDF
-- **Convert PDFs** to other file types (images/text)
-- **Download outputs** instantly
-- **Session-aware file display** across all pages
 
 ---
 
