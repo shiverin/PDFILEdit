@@ -26,6 +26,22 @@ After uploading, the app checks the number of files in the user’s session dire
 
 This dynamic behavior is powered by the way session tracking and file management were architected—ensuring that uploaded files remain accessible and visible across different routes/pages throughout the app.
 
+
+### Full Feature List
+
+- **Secure PDF Upload** with session-based isolation
+- **Remove File / Clear All** options for managing uploads
+- **PDF Merging** when multiple files are uploaded
+- **PDF Signature Tool**:
+  - Draw your signature using HTML5 Canvas
+  - Resize and drag signature onto the rendered PDF
+  - Apply and download signed PDF
+- **PDF Page Extraction** (extract selected pages from a PDF)
+- **PDF Conversion** (e.g., PDF to images or text)
+--**ZIP PDFs together** 
+- **Session Persistence** for uploaded files across different tools/pages
+- **Instant Download** of all output files
+
 ---
 
 ## Why It’s Impactful
