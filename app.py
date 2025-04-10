@@ -12,6 +12,7 @@ import pdf2docx
 import threading
 import time
 from helpers import clear_uploads2
+import PyPDF2 
 
 
 
@@ -368,8 +369,8 @@ def extract_pages():
     # Open the PDF and extract the requested pages
     try:
         with open(file_path, 'rb') as file:
-            pdf_reader = PdfReader(file)
-            pdf_writer = PdfWriter()
+            pdf_reader = PyPDF2.PdfReader(file)
+            pdf_writer = PyPDF2.PdfWriter()
 
             # Extract the specified pages
             for page_num in page_numbers:
