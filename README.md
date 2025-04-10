@@ -98,3 +98,25 @@ pip install -r requirements.txt
 
 # Run the app
 python app.py
+
+The app will be available at http://127.0.0.1:5000.
+
+##Folder Structure
+pdfiledit/
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── merge.html
+│   └── ...
+├── static/
+│   ├── style.css
+│   ├── js/
+│   │   └── signature.js
+├── uploads/
+│   └── [Uploaded files]
+├── signed_pdfs/
+├── converted_images/
+├── requirements.txt
+├── README.md
+└── Procfile
+

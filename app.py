@@ -1,17 +1,18 @@
 import os
-
 import secrets
 from flask import Flask, flash, redirect, render_template, request, send_from_directory, session, send_file, after_this_request, g, url_for
 import uuid
 from werkzeug.utils import secure_filename
 from helpers import clear_uploads, merge_pdfs_h
 import zipfile
-import PyPDF2
 from io import BytesIO
 from pdf2image import convert_from_path
 from PyPDF2 import PdfReader
 import pdf2docx
+import threading
 import time
+from helpers import clear_uploads2
+
 
 
 # Configure application
@@ -296,37 +297,6 @@ def convert_pdf_to_word(file_path):
     pdf2docx.parse(file_path, docx_file_path)
 
     return send_file(docx_file_path, as_attachment=True)
-"""@app.route("/download_zip", methods=["GET", "POST"])
-def download_zip():
-    if request.method=='POST':
-        # Get the user's unique session ID
-        user_id = session.get("user_id", None)
-        if user_id is None:
-            return redirect("/")
-        user_folder = os.path.join(UPLOAD_FOLDER, user_id)
-
-        if not os.path.exists(user_folder) or not os.listdir(user_folder):
-            flash("No files to zip!", "error")
-            return redirect(request.referrer)
-        name = request.form.get("zipped_name", "zip")
-        # Create a temporary zip file in the user's folder
-        zip_filename = f"{name}.zip"
-        zip_file_path = os.path.join(user_folder, zip_filename)
-
-        with zipfile.ZipFile(zip_file_path, 'w') as zipf:
-            for filename in os.listdir(user_folder):
-                file_path = os.path.join(user_folder, filename)
-                if os.path.isfile(file_path):
-                    zipf.write(file_path, os.path.basename(file_path))  # Add each file to the zip
-        @after_this_request
-        def cleanup(response):
-            try:
-                os.remove(zip_file_path)  # Delete the zip file
-                print(f"Deleted the file: {zip_file_path}")
-            except Exception as e:
-                print(f"Error deleting the zip file: {e}")
-                return response
-        return send_file(zip_file_path, as_attachment=True)"""
 
 @app.route("/download_zip", methods=["GET", "POST"])
 def download_zip():
@@ -417,17 +387,36 @@ def extract_pages():
         flash(f"Error processing the PDF: {e}", "error")
         return redirect(request.referrer)
 
-"""
-@app.route("/convert", methods=["GET", "POST"])
-def convert():
-    return render_template("convert.html")
-@app.route("/convert", methods=["GET", "POST"])
-def convert():
-    return render_template("convert.html")"""
+def schedule_clear_uploads():
+    def run():
+        while True:
+            result = clear_uploads2(UPLOAD_FOLDER, 1)
+            flash(f"[ClearUploads] {result['message']}")
+            result = clear_uploads2('static', 1)
+            flash(f"[ClearUploads] {result['message']}")
+            time.sleep(300)  # Run every 5 minutes (300 seconds)
 
-# Set the expiration time (in seconds)
-EXPIRATION_TIME = 24 * 60 * 60  # 24 hours in seconds
+    thread = threading.Thread(target=run, daemon=True)
+    thread.start()
 
+def log_files():
+    """Function to log files in 'uploads' and 'static' every 5 minutes"""
+    while True:
+        # List files in the 'uploads' directory
+        uploads_files = os.listdir('uploads')
+        print("[Uploads Folder] Files:", uploads_files)
+
+        # List files in the 'static' directory
+        static_files = os.listdir('static')
+        print("[Static Folder] Files:", static_files)
+
+        # Sleep for 5 minutes (300 seconds)
+        time.sleep(300)  # 5 minutes
+
+def schedule_log_files():
+    """Function to schedule the file logging in a separate thread"""
+    thread = threading.Thread(target=log_files, daemon=True)
+    thread.start()
 
 if __name__ == "__main__":
     app.run(debug=True)

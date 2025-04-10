@@ -1,7 +1,7 @@
 import os
-from flask import session
 import shutil
 from PyPDF2 import PdfMerger
+import time
 
 
 def clear_uploads(UPLOAD_FOLDER, user_id):
@@ -69,3 +69,32 @@ def merge_pdfs_h(UPLOAD_FOLDER, user_id, merged_name):
     merger.close()
 
     return {"status": "success", "message": "PDFs merged successfully", "count": len(pdf_files), "merged_pdf": merged_pdf_path, "name": merged_name}
+
+
+def clear_uploads2(UPLOAD_FOLDER, user_id):
+    count = 0
+    now = time.time()
+    threshold = 24 * 60 * 60  # 24 hours in seconds
+
+    if user_id == 1:
+        folder = UPLOAD_FOLDER
+        for subfolder in os.listdir(folder):
+            subfolder_path = os.path.join(folder, subfolder)
+            if os.path.isdir(subfolder_path):
+                try:
+                    # Check last modified time
+                    last_modified = os.path.getmtime(subfolder_path)
+                    if now - last_modified > threshold:
+                        shutil.rmtree(subfolder_path)
+                        count += 1
+                except Exception as e:
+                    return {
+                        "status": "error",
+                        "message": str(e),
+                        "count": count
+                    }
+        return {
+            "status": "success",
+            "message": f"{count} folders cleared!",
+            "count": count
+        }
