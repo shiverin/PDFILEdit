@@ -87,7 +87,7 @@ To run PDFILEdit locally:
 ```bash
 # Clone the repo
 git clone https://github.com/yourusername/pdfiledit.git
-cd pdf-master
+cd pdfiledit
 
 # Set up a virtual environment
 python3 -m venv venv
