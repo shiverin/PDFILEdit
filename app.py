@@ -7,7 +7,7 @@ from helpers import clear_uploads, merge_pdfs_h
 import zipfile
 from io import BytesIO
 from pdf2image import convert_from_path
-from PyPDF2 import PdfReader
+from PyPDF2 import PdfReader, PdfWriter
 import pdf2docx
 import threading
 import time
@@ -368,8 +368,8 @@ def extract_pages():
     # Open the PDF and extract the requested pages
     try:
         with open(file_path, 'rb') as file:
-            pdf_reader = PyPDF2.PdfReader(file)
-            pdf_writer = PyPDF2.PdfWriter()
+            pdf_reader = PdfReader(file)
+            pdf_writer = PdfWriter()
 
             # Extract the specified pages
             for page_num in page_numbers:
