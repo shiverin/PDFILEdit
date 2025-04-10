@@ -2,66 +2,92 @@
 
 ## Overview
 
-**PDF Master** is a feature-rich web application that allows users to manage, manipulate, and process PDF files entirely through the browser. Designed as my final project for Harvard’s CS50x course, this Flask-based tool serves as a one-stop platform for common PDF operations, such as uploading, merging, deleting, and converting PDFs—along with a seamless interface to add digital signatures.
+**PDF Master** is a feature-rich web application that addresses a common, frustrating problem that students, working professionals, and educators face every day—**editing and managing PDF files with ease and flexibility**.
 
-The project reflects a blend of software engineering, user experience design, and web security principles. It aims to simplify everyday PDF-related tasks that users would otherwise need multiple desktop tools or paid services for. With an intuitive UI and secure backend, PDF Master is built to be lightweight yet powerful—suitable for both individual users and small businesses.
+Most online tools for PDF editing are either limited, filled with intrusive ads, expensive, or require clunky installations. PDF Master offers a **clean, efficient, and intuitive web-based solution**, empowering users to handle a variety of PDF tasks with just a few clicks—all directly in their browser.
+
+Created as my final project for Harvard's CS50x course, this application reflects both a personal response to a real-world pain point and a demonstration of scalable, secure web application design.
 
 ---
 
-## Key Features
+## What It Does
 
-- **Upload PDFs**: Users can upload PDF files which are automatically sorted into session-specific directories.
-- **Delete PDFs**: Users can remove unwanted PDFs from their session folders.
-- **Merge PDFs**: Select and combine multiple PDFs into a single file.
-- **Download PDFs**: Easily download individual PDFs or merged outputs.
-- **Session Management**: Each user is assigned a unique session ID ensuring private, isolated file access.
-- **Secure File Handling**: Prevents malicious file uploads through validation.
-- **Signature Support** *(in progress)*: Upload, draw, and apply digital signatures to any page of a PDF file.
+PDF Master allows users to upload one or more PDF files via a file input. These files are stored on the server in a **unique session-specific directory**, ensuring **user isolation and scalability** for concurrent users. 
+
+Before accepting any uploads, the server performs strict validation to ensure only `.pdf` files are accepted using a combination of extension checks and `secure_filename` sanitization to prevent malicious file uploads.
+
+After uploading, the app checks the number of files in the user’s session directory:
+
+- **If one file is uploaded**, the user is shown tools suited for individual files—such as:
+  - Signing the PDF
+  - Extracting individual pages
+  - Converting the PDF to other formats (e.g., images)
+- **If multiple files are uploaded**, the user is shown the **Merge** button to combine them into a single document.
+
+This dynamic behavior is powered by the way session tracking and file management were architected—ensuring that uploaded files remain accessible and visible across different routes/pages throughout the app.
 
 ---
 
 ## Why It’s Impactful
 
-Handling PDF files is a daily necessity for students, professionals, and institutions alike. Existing solutions are often either expensive, bloated, or require installation. PDF Master brings these capabilities to the web with a lightweight and responsive experience.
+The design philosophy behind PDF Master is rooted in **enhancing workflow and productivity**. Whether you're a student preparing assignments or a professional handling contracts, PDF Master simplifies your interaction with PDFs without needing to jump between multiple platforms.
 
-This project also explores the integration of key software development principles, such as secure file management, session-based access, modular routing in Flask, and dynamic template rendering. It emphasizes real-world skills and reflects my commitment to building practical, scalable tools as I transition into software development full-time.
-
----
-
-## Technologies Used
-
-- **Flask**: A lightweight Python web framework used for handling routes, sessions, and server logic.
-- **HTML/CSS**: For creating a responsive and clean front-end interface.
-- **Jinja2**: Flask’s templating engine, used to dynamically render user-specific data.
-- **Werkzeug**: Specifically, `secure_filename` is used to safely handle uploaded filenames.
-- **uuid** and **secrets**: For generating unique session identifiers and managing secret keys.
-- **PyPDF2**: A powerful Python library used to manipulate PDF files, including merging and page extraction.
-- **os** and **shutil**: For creating, cleaning, and managing user-specific file directories.
+Moreover, every technical decision was made with **scalability**, **usability**, and **user control** in mind—from secure file uploads to personalized file views and advanced PDF interaction tools.
 
 ---
 
-## Challenges Faced
+## Key Challenges & Solutions
 
-### 1. **File Isolation and Session Management**
-One of the biggest architectural decisions involved implementing session-based file isolation. Each user session needed its own unique folder where files are uploaded and processed. Flask’s built-in session tools helped, but I also used UUIDs to reinforce session uniqueness and security.
+### 1. **Managing Uploaded Files**
 
-### 2. **Post-Processing Cleanup**
-Since files are stored server-side, it was important to implement cleanup mechanisms to delete session data after downloads. This ensures server space is preserved and minimizes the chance of cross-user file access.
+Handling user-uploaded files on the server proved more complex than expected. A major challenge was figuring out **how to clear uploaded files** when a user was done using them—without disrupting their session prematurely.
 
-### 3. **Secure Upload Handling**
-Preventing dangerous file uploads was a key concern. Although file extensions were validated, I researched MIME type checking for future improvements using `python-magic`.
+I experimented with a **JavaScript browser event listener** to detect tab closes, but it was too sensitive—it deleted files even on a simple page refresh, which wasn't acceptable. 
 
-### 4. **User Feedback and Experience**
-Flash messages were implemented to improve the user experience—alerting users when actions like uploads, deletions, or merges succeeded or failed.
+To address this, I designed a **two-way cleanup system**:
+- **Client-side**: Users can remove individual files via a **remove button** or clear all uploads instantly using a **"Clear All"** button—putting file control in the user’s hands.
+- **Server-side**: A scheduled background task (to be integrated) will detect files last modified past a certain threshold and clean them up. This hybrid model ensures files don’t linger indefinitely without burdening users during their session.
+
+### 2. **Integrating Signature Features**
+
+The **PDF signature feature** was particularly challenging. I had to:
+- Render a PDF inside the browser using a custom **PDF renderer**.
+- Overlay an **HTML5 canvas** to collect user input for signatures—either drawn or uploaded.
+- Allow users to **drag** and **resize** the signature on top of the rendered PDF page.
+- Finally, **merge the signature onto the selected page** and provide a downloadable signed PDF.
+
+Researching the correct libraries and methods to layer these components was a significant learning process, but the resulting functionality offers users a seamless and intuitive signature experience.
+
+---
+
+## Features at a Glance
+
+- **Upload PDFs** securely with session isolation
+- **Delete individual or all files**
+- **Merge multiple PDFs**
+- **Sign a PDF** using a signature you draw or upload
+- **Extract pages** from a PDF
+- **Convert PDFs** to other file types (images/text)
+- **Download outputs** instantly
+- **Session-aware file display** across all pages
 
 ---
 
 ## Installation Instructions
 
-To run PDF Master locally on your machine, follow these steps:
-
-### 1. Clone the Repository
+To run PDF Master locally:
 
 ```bash
+# Clone the repo
 git clone https://github.com/yourusername/pdf-master.git
 cd pdf-master
+
+# Set up a virtual environment
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the app
+python app.py
