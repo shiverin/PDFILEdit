@@ -48,7 +48,7 @@ This dynamic behavior is powered by the way session tracking and file management
 
 The design philosophy behind PDF Master is rooted in **enhancing workflow and productivity**. Whether you're a student preparing assignments or a professional handling contracts, PDF Master simplifies your interaction with PDFs without needing to jump between multiple platforms.
 
-Moreover, every technical decision was made with **scalability**, **usability**, and **user control** in mind—from secure file uploads to advanced PDF interaction tools seamlessly integrated together.
+Moreover, every technical decision was made with **scalability**, **usability**, and **user control** in mind—from secure file uploads to advanced PDF interaction tools.
 
 What sets this application apart is not just its powerful set of features, but also the thoughtful user experience it delivers. With clean session-based file handling and an intuitive interface, users are able to **toggle seamlessly between different functions**—such as signing, merging, extracting, and converting—without needing to re-upload or reset their workflow. This makes the application feel truly integrated, enabling users to complete complex PDF tasks quickly and efficiently, all in one place.
 
