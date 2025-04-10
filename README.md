@@ -38,7 +38,7 @@ This dynamic behavior is powered by the way session tracking and file management
   - Apply and download signed PDF
 - **PDF Page Extraction** (extract selected pages from a PDF)
 - **PDF Conversion** (e.g., PDF to images or text)
---**ZIP PDFs together** 
+- **ZIP PDFs Together**: Compress all uploaded PDFs into a single `.zip` 
 - **Session Persistence** for uploaded files across different tools/pages
 - **Instant Download** of all output files
 
