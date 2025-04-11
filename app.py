@@ -1,18 +1,17 @@
 import os
 import secrets
-from flask import Flask, flash, redirect, render_template, request, send_from_directory, session, send_file, after_this_request, g, url_for
+from flask import Flask, flash, redirect, render_template, request, send_from_directory, session, send_file, after_this_request, url_for
 import uuid
 from werkzeug.utils import secure_filename
-from helpers import clear_uploads, merge_pdfs_h
+from helpers import clear_uploads, merge_pdfs_h,clear_uploads2
 import zipfile
 from io import BytesIO
 from pdf2image import convert_from_path
-from PyPDF2 import PdfReader, PdfWriter
+from PyPDF2 import PdfReader
 import pdf2docx
 import threading
 import time
-from helpers import clear_uploads2
-import PyPDF2 
+import PyPDF2
 
 
 
@@ -174,8 +173,7 @@ def merge_pdfs(): #merge pdf
             return redirect("/")  # If no user session, redirect to home
         # Call the merge function
         result = merge_pdfs_h(UPLOAD_FOLDER, user_id, merged_name)
-        g.result=result
-        return render_template("merge_pdfs.html", result=g.result)
+        return render_template("merge_pdfs.html", result=result)
 
 @app.route('/download/static/<path:filename>')
 def download_file(filename): #download file
@@ -193,7 +191,6 @@ def download_file(filename): #download file
         else:
             flash(f"Error: {result['message']}", "error")
         return response
-    g.result=None
     return send_from_directory('', filename)
 
 @app.route('/clearall', methods=['GET','POST'])
