@@ -213,7 +213,7 @@ def clearall(): #rubbish managment to remove folders in uploads, users indv, adm
             flash(f"Error: {result['message']}")
         result=clear_uploads('static', 1)
         if result["status"] == "success":
-            flash(f"{result["message"]} from static!")
+            flash(f"{result['message']} from static!")
         else:
             flash(f"Error: {result['message']}")
         return redirect("/")
