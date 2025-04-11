@@ -116,47 +116,6 @@
 
         </main>
 
-        <footer class="mb-5">
-            <form action="https://validator.w3.org/check" class="text-center" enctype="multipart/form-data" method="post" target="_blank">
-                <input name="doctype" type="hidden" value="HTML5">
-                <input name="fragment" type="hidden">
-                <input alt="Validate" src="/static/I_heart_validator.png" type="image"> <!-- https://validator.w3.org/ -->
-            </form>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Adapted from https://stackoverflow.com/a/10162353
-                    const html = '<!DOCTYPE ' +
-                    document.doctype.name +
-                    (document.doctype.publicId ? ' PUBLIC "' + document.doctype.publicId + '"' : '') +
-                    (!document.doctype.publicId && document.doctype.systemId ? ' SYSTEM' : '') +
-                    (document.doctype.systemId ? ' "' + document.doctype.systemId + '"' : '') +
-                    '>\n' + document.documentElement.outerHTML;
-                    document.querySelector('form[action="https://validator.w3.org/check"] > input[name="fragment"]').value = html;
-                });
-            </script>
-            <script>
-                function updateFormAction() {
-                    const form = document.getElementById('file-form');
-                    const selectedOption = document.getElementById('file-options').value;
-
-                    // Update the action attribute based on the selected option
-                    if (selectedOption === 'option1') {
-                        form.action = '/signature';
-                    } else if (selectedOption === 'option2') {
-                        form.action = '/extract';
-                    } else if (selectedOption === 'option3') {
-                        form.action = '/convert';
-                    }
-                }
-                function validateForm() {
-                    const selectedOption = document.getElementById('file-options').value;
-                    if (selectedOption === "") {
-                    alert("Please select a valid option before submitting.");
-                    return false; // Prevent form submission
-                    }
-                    return true; // Allow form submission
-                }
-            </script>
         </footer>
         <footer style="text-align: center; padding: 10px; background-color: #f1f1f1; margin-top: 20px;">
             <p style="margin-bottom: 0px;">&copy; Shizhen Zhao 2025. All Rights Reserved.</p>
