@@ -115,7 +115,16 @@
             {% endblock %}
 
         </main>
+        <script>
+            function updateFormAction() {
+                const form = document.getElementById('file-form');
+                const selectedOption = document.getElementById('file-options').value;
 
+                if (selectedOption) {
+                    form.action = `/${selectedOption}`;
+                }
+            }
+        </script>
         </footer>
         <footer style="text-align: center; padding: 10px; background-color: #f1f1f1; margin-top: 20px;">
             <p style="margin-bottom: 0px;">&copy; Shizhen Zhao 2025. All Rights Reserved.</p>
