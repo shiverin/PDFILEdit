@@ -110,12 +110,8 @@ pdfiledit/
 │   └── ...
 ├── static/
 │   ├── style.css
-│   ├── js/
-│   │   └── signature.js
 ├── uploads/
 │   └── [Uploaded files]
-├── signed_pdfs/
-├── converted_images/
 ├── requirements.txt
 ├── README.md
 └── Procfile
