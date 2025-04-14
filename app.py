@@ -13,8 +13,6 @@ import threading
 import time
 import PyPDF2
 
-
-
 # Configure application
 app = Flask(__name__)
 
@@ -22,10 +20,8 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-PROCESSED_FOLDER = 'processed'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -213,7 +209,7 @@ def clearall(): #rubbish managment to remove folders in uploads, users indv, adm
             flash(f"Error: {result['message']}")
         result=clear_uploads('static', 1)
         if result["status"] == "success":
-            flash(f"{result['message']} from static!")
+            flash(f"{result["message"]} from static!")
         else:
             flash(f"Error: {result['message']}")
         return redirect("/")
@@ -256,6 +252,9 @@ def convert_pdf(filename, format):
         return redirect('/')
 
 def convert_pdf_to_images(file_path):
+    user_id = session.get("user_id", None)
+    if user_id is None:
+        return redirect("/")
     # Convert PDF to images (one image per page)
     images = convert_from_path(file_path)
     image_files = []
@@ -267,12 +266,20 @@ def convert_pdf_to_images(file_path):
 
     # Create a zip of all images
     from zipfile import ZipFile
-    zip_name = os.path.join(app.config['UPLOAD_FOLDER'], 'images.zip')
+    zip_name = os.path.join(UPLOAD_FOLDER, user_id, 'images.zip')
     with ZipFile(zip_name, 'w') as zipf:
         for img in image_files:
             zipf.write(img, os.path.basename(img))
             os.remove(img)  # Clean up individual image files
 
+    @after_this_request
+    def cleanup(response):
+        try:
+            os.remove(zip_name)
+            print(f"Deleted the word file: {zip_name }")
+        except Exception as e:
+            print(f"Error deleting word file: {e}")
+        return response
     return send_file(zip_name, as_attachment=True)
 
 def convert_pdf_to_text(file_path):
@@ -290,10 +297,20 @@ def convert_pdf_to_text(file_path):
     return send_file(text_file, as_attachment=True, download_name="extracted_text.txt", mimetype="text/plain")
 
 def convert_pdf_to_word(file_path):
+    user_id = session.get("user_id", None)
+    if user_id is None:
+        return redirect("/")
     # Convert PDF to Word using pdf2docx
-    docx_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'converted.docx')
+    docx_file_path = os.path.join(UPLOAD_FOLDER, user_id, 'converted.docx')
     pdf2docx.parse(file_path, docx_file_path)
-
+    @after_this_request
+    def cleanup(response):
+        try:
+            os.remove(docx_file_path)
+            print(f"Deleted the word file: {docx_file_path}")
+        except Exception as e:
+            print(f"Error deleting word file: {e}")
+        return response
     return send_file(docx_file_path, as_attachment=True)
 
 @app.route("/download_zip", methods=["GET", "POST"])
