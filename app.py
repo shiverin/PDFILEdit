@@ -190,30 +190,34 @@ def download_file(filename): #download file
     return send_from_directory('', filename)
 
 @app.route('/clearall', methods=['GET','POST'])
-def clearall(): #rubbish managment to remove folders in uploads, users indv, admin 1 all
-    if request.method=='POST':
+def clearall():  # rubbish management to remove folders in uploads, users indv, admin 1 all
+    if request.method == 'POST':
         user_id = session.get("user_id", None)
         if user_id is None:
             return redirect(request.referrer)
-        result=clear_uploads(UPLOAD_FOLDER, user_id)
+        
+        result = clear_uploads(UPLOAD_FOLDER, user_id)
         if result["status"] == "success":
             flash(result["message"])
         else:
             flash(f"Error: {result['message']}")
+        
         return redirect(request.referrer)
     else:
-        result=clear_uploads(UPLOAD_FOLDER, 1)
+        result = clear_uploads(UPLOAD_FOLDER, 1)
         if result["status"] == "success":
             flash(f"{result['message']} from uploads!")
         else:
             flash(f"Error: {result['message']}")
-        result=clear_uploads('static', 1)
+        
+        result = clear_uploads('static', 1)
         if result["status"] == "success":
-            flash(f"{result["message"]} from static!")
+            flash(f"{result['message']} from static!")
         else:
             flash(f"Error: {result['message']}")
+        
         return redirect("/")
-
+        
 @app.route('/cleardown', methods=['GET','POST'])
 def cleardown(): #manages rubbish from downloads (static) folder, user post removes indv fold and admin 1 removes all folder
     if request.method=='POST':
